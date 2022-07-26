@@ -83,4 +83,4 @@ SELECT body, type_of_object, shape
 FROM solar_system_objects
 WHERE type_of_object LIKE 'planet%'
 AND shape = 'round'
-GROUP BY body, type_of_object
+GROUP BY body, type_of_object;
