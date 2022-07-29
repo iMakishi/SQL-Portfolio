@@ -54,33 +54,58 @@ INSERT INTO solar_system_objects(body,mean_radius,mean_radius_rel,volume,volume_
 
 SELECT * FROM solar_system_objects;
 
-/*Select mass average, maximum mass and minimum mass from list of bodies*/
+/*Return AVG mass*/
 
-SELECT AVG(mass), MAX(mass), MIN(mass) FROM solar_system_objects;
+SELECT AVG(mass) FROM solar_system_objects;
 
-/*Select bodies with an average volume greater than 1000*/
+/*Return body with MAX(mass)*/
 
-SELECT body, AVG(volume)
+SELECT body, MAX(mass) FROM solar_system_objects;
+
+/*Return body with MIN(mass)*/
+
+SELECT body, MIN(mass) FROM solar_system_objects;
+
+/*Return bodies with a relative mean radius greater than Earth's*/
+
+SELECT body, mean_radius_rel AS "MRR>E"
+
 FROM solar_system_objects
+
 GROUP BY body
-HAVING AVG(volume) > 1000;
 
-/*Walking prospects*/
+HAVING "MRR>E" > 1;
 
-SELECT body, surface_gravity,
+/*Return bodies with a relative mean radius lower than Earth's*/
+
+SELECT body, mean_radius_rel AS "MRR<E"
+
+FROM solar_system_objects
+
+GROUP BY body
+
+HAVING "MRR<E" < 1;
+
+/*Return a count of bodies with a relative mean radius lower and greater than Earth's.*/
+
+SELECT COUNT(*),
     CASE
-        WHEN surface_gravity > 15 THEN "Na, you just got squashed"
-        WHEN surface_gravity > 10 THEN "It's heavy to walk on"
-        WHEN surface_gravity < 1 THEN "If u didnt tie yourself to the ground, bye"
-        WHEN surface_gravity < 8 THEN "It's lighter to walk on"
-        ELSE "You're probably fine to walk?"
-    END as "walking_prospects" FROM solar_system_objects
-GROUP BY surface_gravity, body, "walking_prospects";
+        WHEN mean_radius_rel > 1 THEN "Bigger Than Earth"
+        WHEN mean_radius_rel = 1 THEN "Earth"
+        WHEN mean_radius_rel < 1 THEN "Smaller Than Earth"
+    END AS "relative_size_comparison"
+FROM solar_system_objects
+GROUP BY relative_size_comparison;
 
-/*Select only bodies that are round and are considered planets*/
+/*Return bodies that are considered either planets or satellites and are round*/
 
 SELECT body, type_of_object, shape
 FROM solar_system_objects
-WHERE type_of_object LIKE 'planet%'
+WHERE type_of_object LIKE "planet%" OR type_of_object LIKE "satellite%"
 AND shape = 'round'
 GROUP BY body, type_of_object;
+
+/*Return bodies that fit the the description of a subquery that selects only objetcs considered as "Planets"*/
+
+SELECT body FROM solar_system_objects
+WHERE type_of_object IN (SELECT type_of_object FROM solar_system_objects WHERE type_of_object LIKE "planet%");
