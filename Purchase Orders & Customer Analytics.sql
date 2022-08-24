@@ -50,3 +50,11 @@ SELECT Product, SUM(quantity)
 FROM BIT_DB.FebSales 
 WHERE location like '%Los Angeles%'
 GROUP BY Product;
+
+/*Which locations in New York received at least 3 orders in January, and how many orders did they each receive? (Hint: use HAVING).*/
+
+SELECT DISTINCT location, COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE location LIKE '%NY%'
+GROUP BY location
+HAVING COUNT(orderID) >= 3;
