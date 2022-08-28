@@ -58,3 +58,12 @@ FROM BIT_DB.JanSales
 WHERE location LIKE '%NY%'
 GROUP BY location
 HAVING COUNT(orderID) >= 3;
+
+/*What was the average amount spent per account in February? (Hints: For this question, we want the average amount spent / number of accounts, not the amount spent by each account. To multiply, you can use the * symbol, and to divide, you can use the / symbol.)*/
+
+SELECT SUM(Quantity * price)/COUNT(acctnum) AS AVG_amount_spent
+FROM BIT_DB.FebSales FebSales
+LEFT JOIN BIT_DB.customers Customers
+ON FebSales.orderID = Customers.order_id
+ORDER BY Customers.acctnum
+
