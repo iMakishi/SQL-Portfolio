@@ -65,5 +65,17 @@ SELECT SUM(Quantity * price)/COUNT(acctnum) AS AVG_amount_spent
 FROM BIT_DB.FebSales FebSales
 LEFT JOIN BIT_DB.customers Customers
 ON FebSales.orderID = Customers.order_id
-ORDER BY Customers.acctnum
 
+/*What was the average quantity of products purchased per account in February? (Hint: just like question 3, we want the overall average, not the average for each account individually).*/
+
+SELECT SUM(Quantity)/COUNT(acctnum) AS AVG_product_quantity
+FROM BIT_DB.FebSales FebSales
+LEFT JOIN BIT_DB.customers Customers
+ON FebSales.orderID = Customers.order_id
+
+/*Which product brought in the most revenue in January and how much revenue did it bring in total?*/
+
+SELECT Product, SUM(Quantity * price) AS total_revenue 
+FROM BIT_DB.JanSales
+GROUP BY Product
+ORDER BY total_revenue desc
