@@ -1,4 +1,4 @@
-/**/
+/*Based on Spotify data downloaded from Kaggle*/
 
 CREATE TABLE BIT_DB.Spotifydata (
 id integer PRIMARY KEY,
@@ -20,3 +20,25 @@ tempo decimal(6,3) NOT NULL,
 duration_ms integer NOT NULL,
 time_signature integer NOT NULL 
 )
+
+SELECT * FROM BIT_DB.Spotifydata
+
+/*TOP 10 Popular songs*/
+
+SELECT track_name, artist_name
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc
+LIMIT 10;
+
+/*All tracks by Olivia Rodrigo*/
+
+SELECT *
+FROM BIT_DB.Spotifydata
+WHERE artist_name = 'Olivia Rodrigo';
+
+/*Loudest track*/
+
+SELECT track_name, artist_name, loudness
+FROM BIT_DB.Spotifydata
+ORDER BY loudness asc
+LIMIT 1;
