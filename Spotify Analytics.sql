@@ -42,3 +42,15 @@ SELECT track_name, artist_name, loudness
 FROM BIT_DB.Spotifydata
 ORDER BY loudness asc
 LIMIT 1;
+
+/*Top artists based on popularity*/
+
+WITH CTE_PopularityAVG AS (
+    SELECT artist_name, AVG(popularity) AS avg_popularity
+    FROM Spotifydata
+    GROUP BY artist_name
+)
+SELECT artist_name, avg_popularity, 'Top Star' AS tag
+FROM CTE_PopularityAVG
+WHERE avg_popularity >= 90
+ORDER BY avg_popularity desc;
