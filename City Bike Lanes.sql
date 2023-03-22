@@ -87,3 +87,12 @@ WITH AVG_safety_rating AS (
 SELECT street, rating, 'Safe Lane' AS label
 FROM AVG_safety_rating
 WHERE rating >= 4.0
+
+SELECT street,
+AVG(safetyrating) OVER(PARTITION BY street) AS avg_safety_rating,
+CASE
+    WHEN AVG(safetyrating) OVER(PARTITION BY street) >= 4 THEN 'Leave As-Is'
+    WHEN AVG(safetyrating) OVER(PARTITION BY street) < 2.5 THEN 'Remove'
+    ELSE "Improvements Needed"
+    END AS "Recommendation"
+FROM CityBikeLanes
